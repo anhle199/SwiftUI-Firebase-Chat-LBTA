@@ -10,7 +10,7 @@ import SwiftUI
 struct MainMessageListView: View {
     var body: some View {
         ScrollView {
-            ForEach(0..<19, id: \.self) { _ in
+            ForEach(0..<5, id: \.self) { _ in
                 VStack {
                     MainMessageRow(
                         imageProfileUrl: "",

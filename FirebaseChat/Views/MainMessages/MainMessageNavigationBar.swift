@@ -51,7 +51,7 @@ struct MainMessageNavigationBar: View {
                     
                     Text("online")
                         .font(.system(size: 12))
-                        .foregroundColor(Color(.lightGray))
+                        .foregroundColor(.secondary)
                 }
             }
             
@@ -77,12 +77,9 @@ struct MainMessageNavigationBar: View {
                 ]
             )
         }
-        .fullScreenCover(
-            isPresented: $viewModel.isUserCurrentlyLoggedOut,
-            onDismiss: nil
-        ) {
+        .fullScreenCover(isPresented: $viewModel.isUserCurrentlyLoggedOut) {
             LoginView(didCompleteLogInAndRegisterProcess: {
-                viewModel.isUserCurrentlyLoggedOut.toggle()
+                viewModel.isUserCurrentlyLoggedOut = false
                 viewModel.fetchCurrentUser()
             })
         }

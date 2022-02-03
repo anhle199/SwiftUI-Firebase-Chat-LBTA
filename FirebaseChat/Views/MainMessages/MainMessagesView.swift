@@ -15,6 +15,8 @@ struct MainMessagesView: View {
     // State variable determines whether showing log out option or not
     @State private var shouldShowLogOut = false
     
+    @State private var shouldShowNewMessagesScreen = false
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -39,7 +41,7 @@ struct MainMessagesView: View {
     @ViewBuilder
     private func NewMessageButton() -> some View {
         Button {
-            
+            shouldShowNewMessagesScreen.toggle()
         } label: {
             Text("+ New Message")
                 .font(.system(size: 16, weight: .bold))
@@ -50,6 +52,9 @@ struct MainMessagesView: View {
                 .background(Color.blue)
                 .cornerRadius(32)
                 .padding(.horizontal)
+        }
+        .fullScreenCover(isPresented: $shouldShowNewMessagesScreen) {
+            CreateNewMessageView(isPresented: $shouldShowNewMessagesScreen)
         }
     }
 }

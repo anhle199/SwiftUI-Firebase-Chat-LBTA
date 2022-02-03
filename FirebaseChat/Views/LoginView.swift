@@ -122,7 +122,7 @@ struct LoginView: View {
             )
         }
         .navigationViewStyle(StackNavigationViewStyle())
-        .fullScreenCover(isPresented: $shouldShowImagePicker, onDismiss: nil) {
+        .fullScreenCover(isPresented: $shouldShowImagePicker) {
             ImagePicker(image: $viewModel.avatarImage)
         }
     }

@@ -26,13 +26,13 @@ struct MainMessageRow: View {
                 )
             
             // Sent user's information
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 4) {
                 Text(username)
                     .font(.system(size: 16, weight: .bold))
                 
                 Text(lastMessage)
                     .font(.system(size: 14))
-                    .foregroundColor(Color(.lightGray))
+                    .foregroundColor(.secondary)
             }
             
             Spacer()
