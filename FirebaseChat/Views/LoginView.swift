@@ -10,15 +10,16 @@ import SwiftUI
 struct LoginView: View {
     
     // State variable to navigate login or create account view
-    @State var isLoginMode = false
+    @State private var isLoginMode = false
     
     // State variables to get login or create account info from user
-    @State var email = ""
-    @State var password = ""
+    @State private var email = ""
+    @State private var password = ""
+    @State private var chatName = ""
     
     // State variables to show and get avatar image from user
-    @State var shouldShowImagePicker = false
-    @State var avatarImage: UIImage?
+    @State private var shouldShowImagePicker = false
+    @State private var avatarImage: UIImage?
     
     var body: some View {
         NavigationView {
@@ -64,6 +65,11 @@ struct LoginView: View {
                     }
                     
                     Group {
+                        if !isLoginMode {
+                            // Chat name text field
+                            TextField("Chat name", text: $chatName)
+                        }
+                        
                         // Email text field
                         TextField("Email", text: $email)
                             .keyboardType(.emailAddress)
@@ -121,14 +127,15 @@ struct LoginView: View {
     
     private func loginUser() {
         FirebaseManager.shared.auth.signIn(
-            withEmail: email,
-            password: password
+            withEmail: email,   // "testaccount1@gmail.com",
+            password: password  // "123123"
         ) { result, error in
             if let error = error {
                 print("Failed to login user: \(error)")
                 return
             }
-            
+//            test login
+//            self.email = "HRQPj3IWwmXa1pVm31p3rrJJBOz2"
             print("Successfully logged in user: \(result?.user.uid ?? "")")
         }
     }
@@ -185,8 +192,9 @@ struct LoginView: View {
         
         // User data needs to store
         let userData = [
-            "email": email,
             "uid": uid,
+            "email": email,
+            "chatName": chatName,
             "imageProfileUrl": imageProfileUrl.absoluteString
         ]
         

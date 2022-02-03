@@ -9,15 +9,19 @@ import SwiftUI
 
 struct MainMessagesView: View {
     
-    @State var shouldShowLogOut = false
+    // View model
+    @ObservedObject private var viewModel = MainMessagesViewModel()
+    
+    // State variable whether determine to show log out option or not
+    @State private var shouldShowLogOut = false
     
     var body: some View {
         NavigationView {
             VStack {
                 // Customized navigation bar
                 MainMessageNavigationBar(
-                    profileImage: "person.fill",
-                    username: "Username",
+                    imageProfileUrl: viewModel.currentUser?.imageProfileUrl ?? "",
+                    username: viewModel.currentUser?.chatName ?? "Username",
                     shouldShowLogOut: $shouldShowLogOut
                 )
                 

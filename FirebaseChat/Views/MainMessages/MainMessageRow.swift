@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MainMessageRow: View {
     
-    let profileImage: String
+    let imageProfileUrl: String
     let username: String
     let lastMessage: String
     
@@ -17,7 +17,7 @@ struct MainMessageRow: View {
         // Message row
         HStack(spacing: 16) {
             // Sent user's avatar
-            Image(systemName: profileImage)
+            Image(systemName: "person.fill")
                 .font(.system(size: 32))
                 .padding(8)
                 .overlay(
@@ -47,7 +47,7 @@ struct MainMessageRow: View {
 struct MainMessageRow_Previews: PreviewProvider {
     static var previews: some View {
         MainMessageRow(
-            profileImage: "person.fill",
+            imageProfileUrl: "",
             username: "Username",
             lastMessage: "Message sent to user"
         )

@@ -6,11 +6,12 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct MainMessageNavigationBar: View {
     
     // User information
-    let profileImage: String
+    let imageProfileUrl: String
     let username: String
     
     // Binding variable whether determine to show log out option or not
@@ -19,8 +20,21 @@ struct MainMessageNavigationBar: View {
     var body: some View {
         HStack {
             // Profile avatar
-            Image(systemName: profileImage)
-                .font(.system(size: 34, weight: .heavy))
+            WebImage(url: URL(string: imageProfileUrl))
+                .placeholder {
+                    Image(systemName: "person.fill")
+                        .font(.system(size: 34, weight: .heavy))
+                }
+                .resizable()
+                .scaledToFill()
+                .frame(width: 50, height: 50)
+                .clipped()
+                .cornerRadius(50)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 50)
+                        .stroke(Color(.label), lineWidth: 1)
+                )
+                .shadow(radius: 5)
             
             
             // User information
@@ -71,7 +85,7 @@ struct MainMessageNavigationBar: View {
 struct MainMessageNavigationbar_Previews: PreviewProvider {
     static var previews: some View {
         MainMessageNavigationBar(
-            profileImage: "person.fill",
+            imageProfileUrl: "",
             username: "Username",
             shouldShowLogOut: .constant(false)
         )

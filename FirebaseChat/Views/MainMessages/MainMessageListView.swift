@@ -13,7 +13,7 @@ struct MainMessageListView: View {
             ForEach(0..<19, id: \.self) { _ in
                 VStack {
                     MainMessageRow(
-                        profileImage: "person.fill",
+                        imageProfileUrl: "",
                         username: "Username",
                         lastMessage: "Message sent to user"
                     )
