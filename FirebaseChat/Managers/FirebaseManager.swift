@@ -6,22 +6,24 @@
 //
 
 import Firebase
+import FirebaseFirestore
 
 // Applying singleton pattern
 struct FirebaseManager {
     // Singleton object
     static let shared = FirebaseManager()
     
-    // Firebase Authentication
+    // Firebase services
     let auth: Auth
-    
-    // Firebase Storage
     let storage: Storage
+    let firestore: Firestore
     
     private init() {
         FirebaseApp.configure()
         
+        // Initialize Firebase services
         self.auth = Auth.auth()
         self.storage = Storage.storage()
+        self.firestore = Firestore.firestore()
     }
 }

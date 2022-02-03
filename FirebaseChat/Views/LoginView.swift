@@ -74,6 +74,7 @@ struct LoginView: View {
                     }
                     .padding(12)
                     .background(Color.white)
+                    .cornerRadius(5)
                     
                     // Login or create account button
                     Button {
@@ -84,19 +85,20 @@ struct LoginView: View {
                             
                             Text(isLoginMode ? "Log In" : "Create Account")
                                 .foregroundColor(.white)
-                                .padding(.vertical, 10)
-                                .font(.system(size: 14, weight: .semibold))
+                                .padding(.vertical, 12)
+                                .font(.system(size: 16, weight: .semibold))
                             
                             Spacer()
                         }
                         .background(Color.blue)
                     }
+                    .cornerRadius(5)
                 }
                 .padding()
             }
             .navigationTitle(isLoginMode ? "Login" : "Create Account")
             .background(
-                Color(UIColor(white: 0, alpha: 0.05))
+                Color(UIColor(white: 0, alpha: 0.07))
                     .ignoresSafeArea()
             )
         }
@@ -168,8 +170,37 @@ struct LoginView: View {
                 }
                 
                 print("Successfully stored image with url: \(url?.absoluteString ?? "")")
+                
+                if let url = url {
+                    storeUserInformation(imageProfileUrl: url)
+                }
             }
         }
+    }
+    
+    private func storeUserInformation(imageProfileUrl: URL) {
+        guard let uid = FirebaseManager.shared.auth.currentUser?.uid else {
+            return
+        }
+        
+        // User data needs to store
+        let userData = [
+            "email": email,
+            "uid": uid,
+            "imageProfileUrl": imageProfileUrl.absoluteString
+        ]
+        
+        FirebaseManager.shared.firestore
+            .collection("users")
+            .document(uid)
+            .setData(userData) { error in
+                if let error = error {
+                    print("Failed to store user information in Firestore: \(error)")
+                    return
+                }
+                
+                print("Successfully stored user information in Firestore")
+            }
     }
     
 }
