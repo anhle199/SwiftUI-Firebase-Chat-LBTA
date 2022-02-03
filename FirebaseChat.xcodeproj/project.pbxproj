@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E6094AFF27ABD21000940CA9 /* MainMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6094AFE27ABD21000940CA9 /* MainMessagesView.swift */; };
+		E6094B0127ABE4BB00940CA9 /* MainMessageNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6094B0027ABE4BB00940CA9 /* MainMessageNavigationBar.swift */; };
+		E6094B0327ABE5C300940CA9 /* MainMessageRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6094B0227ABE5C300940CA9 /* MainMessageRow.swift */; };
+		E6094B0727ABE83900940CA9 /* MainMessageListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6094B0627ABE83900940CA9 /* MainMessageListView.swift */; };
 		E6504A2C27A9526700E61A3E /* FirebaseChatApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6504A2B27A9526700E61A3E /* FirebaseChatApp.swift */; };
 		E6504A3027A9526900E61A3E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E6504A2F27A9526900E61A3E /* Assets.xcassets */; };
 		E6504A3327A9526900E61A3E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E6504A3227A9526900E61A3E /* Preview Assets.xcassets */; };
@@ -20,6 +24,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E6094AFE27ABD21000940CA9 /* MainMessagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMessagesView.swift; sourceTree = "<group>"; };
+		E6094B0027ABE4BB00940CA9 /* MainMessageNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMessageNavigationBar.swift; sourceTree = "<group>"; };
+		E6094B0227ABE5C300940CA9 /* MainMessageRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMessageRow.swift; sourceTree = "<group>"; };
+		E6094B0627ABE83900940CA9 /* MainMessageListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMessageListView.swift; sourceTree = "<group>"; };
 		E6504A2827A9526700E61A3E /* FirebaseChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FirebaseChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6504A2B27A9526700E61A3E /* FirebaseChatApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseChatApp.swift; sourceTree = "<group>"; };
 		E6504A2F27A9526900E61A3E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -44,6 +52,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E6094AFC27ABD1F900940CA9 /* MainMessages */ = {
+			isa = PBXGroup;
+			children = (
+				E6094AFE27ABD21000940CA9 /* MainMessagesView.swift */,
+				E6094B0027ABE4BB00940CA9 /* MainMessageNavigationBar.swift */,
+				E6094B0227ABE5C300940CA9 /* MainMessageRow.swift */,
+				E6094B0627ABE83900940CA9 /* MainMessageListView.swift */,
+			);
+			path = MainMessages;
+			sourceTree = "<group>";
+		};
 		E6504A1F27A9526700E61A3E = {
 			isa = PBXGroup;
 			children = (
@@ -94,6 +113,7 @@
 		E6504A3B27A9543D00E61A3E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				E6094AFC27ABD1F900940CA9 /* MainMessages */,
 				E6C5387227A99C4B0027042A /* LoginView.swift */,
 			);
 			path = Views;
@@ -203,8 +223,12 @@
 			files = (
 				E6C5388227A9ACE60027042A /* FirebaseManager.swift in Sources */,
 				E6C5388527AA14F20027042A /* ImagePicker.swift in Sources */,
+				E6094B0127ABE4BB00940CA9 /* MainMessageNavigationBar.swift in Sources */,
 				E6C5387327A99C4B0027042A /* LoginView.swift in Sources */,
 				E6504A2C27A9526700E61A3E /* FirebaseChatApp.swift in Sources */,
+				E6094B0727ABE83900940CA9 /* MainMessageListView.swift in Sources */,
+				E6094AFF27ABD21000940CA9 /* MainMessagesView.swift in Sources */,
+				E6094B0327ABE5C300940CA9 /* MainMessageRow.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
