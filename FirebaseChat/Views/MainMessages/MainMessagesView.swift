@@ -12,7 +12,7 @@ struct MainMessagesView: View {
     // View model
     @ObservedObject private var viewModel = MainMessagesViewModel()
     
-    // State variable whether determine to show log out option or not
+    // State variable determines whether showing log out option or not
     @State private var shouldShowLogOut = false
     
     var body: some View {
@@ -20,8 +20,7 @@ struct MainMessagesView: View {
             VStack {
                 // Customized navigation bar
                 MainMessageNavigationBar(
-                    imageProfileUrl: viewModel.currentUser?.imageProfileUrl ?? "",
-                    username: viewModel.currentUser?.chatName ?? "Username",
+                    viewModel: viewModel,
                     shouldShowLogOut: $shouldShowLogOut
                 )
                 

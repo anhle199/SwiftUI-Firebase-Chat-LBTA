@@ -10,17 +10,17 @@ import SDWebImageSwiftUI
 
 struct MainMessageNavigationBar: View {
     
-    // User information
-    let imageProfileUrl: String
-    let username: String
+    // Main Messages View Model: get current user information
+    // and handle action of log out button
+    @ObservedObject var viewModel: MainMessagesViewModel
     
-    // Binding variable whether determine to show log out option or not
+    // Binding variable determines whether showing log out option or not
     @Binding var shouldShowLogOut: Bool
     
     var body: some View {
         HStack {
             // Profile avatar
-            WebImage(url: URL(string: imageProfileUrl))
+            WebImage(url: URL(string: viewModel.currentUser?.imageProfileUrl ?? ""))
                 .placeholder {
                     Image(systemName: "person.fill")
                         .font(.system(size: 34, weight: .heavy))
@@ -40,7 +40,7 @@ struct MainMessageNavigationBar: View {
             // User information
             VStack(alignment: .leading, spacing: 4) {
                 // Username
-                Text(username)
+                Text(viewModel.currentUser?.chatName ?? "Username")
                     .font(.system(size: 24, weight: .bold))
                 
                 // Current status: online or offline
@@ -72,12 +72,19 @@ struct MainMessageNavigationBar: View {
                 title: Text("Are you sure you want to log out?"),
                 message: nil,
                 buttons: [
-                    .destructive(Text("Log out"), action: {
-                        print("Needs to handle log out")
-                    }),
+                    .destructive(Text("Log out"), action: viewModel.handleSignOut),
                     .cancel(),
                 ]
             )
+        }
+        .fullScreenCover(
+            isPresented: $viewModel.isUserCurrentlyLoggedOut,
+            onDismiss: nil
+        ) {
+            LoginView(didCompleteLogInAndRegisterProcess: {
+                viewModel.isUserCurrentlyLoggedOut.toggle()
+                viewModel.fetchCurrentUser()
+            })
         }
     }
 }
@@ -85,8 +92,7 @@ struct MainMessageNavigationBar: View {
 struct MainMessageNavigationbar_Previews: PreviewProvider {
     static var previews: some View {
         MainMessageNavigationBar(
-            imageProfileUrl: "",
-            username: "Username",
+            viewModel: MainMessagesViewModel(),
             shouldShowLogOut: .constant(false)
         )
     }

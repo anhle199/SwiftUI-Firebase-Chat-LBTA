@@ -9,17 +9,16 @@ import SwiftUI
 
 struct LoginView: View {
     
+    // View model
+    @ObservedObject private var viewModel = LoginViewModel()
+    
     // State variable to navigate login or create account view
     @State private var isLoginMode = false
     
-    // State variables to get login or create account info from user
-    @State private var email = ""
-    @State private var password = ""
-    @State private var chatName = ""
-    
     // State variables to show and get avatar image from user
     @State private var shouldShowImagePicker = false
-    @State private var avatarImage: UIImage?
+    
+    let didCompleteLogInAndRegisterProcess: () -> Void
     
     var body: some View {
         NavigationView {
@@ -44,7 +43,7 @@ struct LoginView: View {
                             shouldShowImagePicker.toggle()
                         } label: {
                             VStack {
-                                if let image = avatarImage {
+                                if let image = viewModel.avatarImage {
                                     Image(uiImage: image)
                                         .resizable()
                                         .scaledToFill()
@@ -67,16 +66,16 @@ struct LoginView: View {
                     Group {
                         if !isLoginMode {
                             // Chat name text field
-                            TextField("Chat name", text: $chatName)
+                            TextField("Chat name", text: $viewModel.chatName)
                         }
                         
                         // Email text field
-                        TextField("Email", text: $email)
+                        TextField("Email", text: $viewModel.email)
                             .keyboardType(.emailAddress)
                             .textInputAutocapitalization(.never)
                         
                         // Password text field
-                        SecureField("Password", text: $password)
+                        SecureField("Password", text: $viewModel.password)
                     }
                     .padding(12)
                     .background(Color.white)
@@ -84,7 +83,11 @@ struct LoginView: View {
                     
                     // Login or create account button
                     Button {
-                        handleAction()
+                        if isLoginMode {
+                            viewModel.loginUser()
+                        } else {
+                            viewModel.createNewAccount()
+                        }
                     } label: {
                         HStack {
                             Spacer()
@@ -99,6 +102,16 @@ struct LoginView: View {
                         .background(Color.blue)
                     }
                     .cornerRadius(5)
+                    .onChange(
+                        of: viewModel.isLoggedInOrRegistered
+                    ) { isLoggedInOrRegistered in
+                        if isLoggedInOrRegistered {
+                            didCompleteLogInAndRegisterProcess()
+                        }
+                    }
+                    
+                    Text(viewModel.errorMessage)
+                        .foregroundColor(.red)
                 }
                 .padding()
             }
@@ -110,111 +123,14 @@ struct LoginView: View {
         }
         .navigationViewStyle(StackNavigationViewStyle())
         .fullScreenCover(isPresented: $shouldShowImagePicker, onDismiss: nil) {
-            ImagePicker(image: $avatarImage)
+            ImagePicker(image: $viewModel.avatarImage)
         }
-    }
-    
-    
-    // MARK: - Action Methods
-    
-    private func handleAction() {
-        if isLoginMode {
-            loginUser()
-        } else {
-            createNewAccount()
-        }
-    }
-    
-    private func loginUser() {
-        FirebaseManager.shared.auth.signIn(
-            withEmail: email,   // "testaccount1@gmail.com",
-            password: password  // "123123"
-        ) { result, error in
-            if let error = error {
-                print("Failed to login user: \(error)")
-                return
-            }
-//            test login
-//            self.email = "HRQPj3IWwmXa1pVm31p3rrJJBOz2"
-            print("Successfully logged in user: \(result?.user.uid ?? "")")
-        }
-    }
-    
-    private func createNewAccount() {
-        FirebaseManager.shared.auth.createUser(
-            withEmail: email,
-            password: password
-        ) { result, error in
-            if let error = error {
-                print("Failed to create account: \(error)")
-                return
-            }
-           
-            print("Successfully created user: \(result?.user.uid ?? "")")
-            persistImageToStorage()
-        }
-    }
-    
-    private func persistImageToStorage() {
-        guard let uid = FirebaseManager.shared.auth.currentUser?.uid,
-              let imageData = avatarImage?.jpegData(compressionQuality: 0.5)
-        else {
-            return
-        }
-        
-        let ref = FirebaseManager.shared.storage.reference(withPath: uid)
-        
-        ref.putData(imageData, metadata: nil) { metaData, error in
-            if let error = error {
-                print("Failed to push image to storage: \(error)")
-                return
-            }
-            
-            ref.downloadURL { url, error in
-                if let error = error {
-                    print("Failed to retrieve downloadURL: \(error)")
-                    return
-                }
-                
-                print("Successfully stored image with url: \(url?.absoluteString ?? "")")
-                
-                if let url = url {
-                    storeUserInformation(imageProfileUrl: url)
-                }
-            }
-        }
-    }
-    
-    private func storeUserInformation(imageProfileUrl: URL) {
-        guard let uid = FirebaseManager.shared.auth.currentUser?.uid else {
-            return
-        }
-        
-        // User data needs to store
-        let userData = [
-            "uid": uid,
-            "email": email,
-            "chatName": chatName,
-            "imageProfileUrl": imageProfileUrl.absoluteString
-        ]
-        
-        FirebaseManager.shared.firestore
-            .collection("users")
-            .document(uid)
-            .setData(userData) { error in
-                if let error = error {
-                    print("Failed to store user information in Firestore: \(error)")
-                    return
-                }
-                
-                print("Successfully stored user information in Firestore")
-            }
     }
     
 }
 
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
-        LoginView()
+        LoginView(didCompleteLogInAndRegisterProcess: {})
     }
 }
