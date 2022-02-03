@@ -15,6 +15,7 @@
 		E6C5387D27A9A6130027042A /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = E6C5387C27A9A6130027042A /* FirebaseAuth */; };
 		E6C5387F27A9A6130027042A /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = E6C5387E27A9A6130027042A /* FirebaseStorage */; };
 		E6C5388227A9ACE60027042A /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C5388127A9ACE60027042A /* FirebaseManager.swift */; };
+		E6C5388527AA14F20027042A /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C5388427AA14F20027042A /* ImagePicker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +26,7 @@
 		E6C5387227A99C4B0027042A /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		E6C5387927A9A18B0027042A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E6C5388127A9ACE60027042A /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
+		E6C5388427AA14F20027042A /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +61,7 @@
 		E6504A2A27A9526700E61A3E /* FirebaseChat */ = {
 			isa = PBXGroup;
 			children = (
+				E6C5388327AA14DD0027042A /* Supporting */,
 				E6C5388027A9ABDD0027042A /* Managers */,
 				E6504A3927A9542C00E61A3E /* Models */,
 				E6504A3B27A9543D00E61A3E /* Views */,
@@ -107,6 +110,14 @@
 				E6C5388127A9ACE60027042A /* FirebaseManager.swift */,
 			);
 			path = Managers;
+			sourceTree = "<group>";
+		};
+		E6C5388327AA14DD0027042A /* Supporting */ = {
+			isa = PBXGroup;
+			children = (
+				E6C5388427AA14F20027042A /* ImagePicker.swift */,
+			);
+			path = Supporting;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -188,6 +199,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E6C5388227A9ACE60027042A /* FirebaseManager.swift in Sources */,
+				E6C5388527AA14F20027042A /* ImagePicker.swift in Sources */,
 				E6C5387327A99C4B0027042A /* LoginView.swift in Sources */,
 				E6504A2C27A9526700E61A3E /* FirebaseChatApp.swift in Sources */,
 			);

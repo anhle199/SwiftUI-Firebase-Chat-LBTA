@@ -15,8 +15,13 @@ struct FirebaseManager {
     // Firebase Authentication
     let auth: Auth
     
+    // Firebase Storage
+    let storage: Storage
+    
     private init() {
         FirebaseApp.configure()
+        
         self.auth = Auth.auth()
+        self.storage = Storage.storage()
     }
 }

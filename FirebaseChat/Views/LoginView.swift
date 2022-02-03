@@ -9,9 +9,16 @@ import SwiftUI
 
 struct LoginView: View {
     
+    // State variable to navigate login or create account view
     @State var isLoginMode = false
+    
+    // State variables to get login or create account info from user
     @State var email = ""
     @State var password = ""
+    
+    // State variables to show and get avatar image from user
+    @State var shouldShowImagePicker = false
+    @State var avatarImage: UIImage?
     
     var body: some View {
         NavigationView {
@@ -33,10 +40,26 @@ struct LoginView: View {
                     if !isLoginMode {
                         // Avatar selection button
                         Button {
-                            
+                            shouldShowImagePicker.toggle()
                         } label: {
-                            Image(systemName: "person.fill")
-                                .font(.system(size: 64))
+                            VStack {
+                                if let image = avatarImage {
+                                    Image(uiImage: image)
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 128, height: 128)
+                                        .cornerRadius(64)
+                                } else {
+                                    Image(systemName: "person.fill")
+                                        .font(.system(size: 64))
+                                        .padding()
+                                        .foregroundColor(Color(.label))
+                                }
+                            }
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 64)
+                                    .stroke(.black, lineWidth: 3)
+                            )
                         }
                     }
                     
@@ -78,7 +101,13 @@ struct LoginView: View {
             )
         }
         .navigationViewStyle(StackNavigationViewStyle())
+        .fullScreenCover(isPresented: $shouldShowImagePicker, onDismiss: nil) {
+            ImagePicker(image: $avatarImage)
+        }
     }
+    
+    
+    // MARK: - Action Methods
     
     private func handleAction() {
         if isLoginMode {
@@ -111,8 +140,35 @@ struct LoginView: View {
                 print("Failed to create account: \(error)")
                 return
             }
-            
+           
             print("Successfully created user: \(result?.user.uid ?? "")")
+            persistImageToStorage()
+        }
+    }
+    
+    private func persistImageToStorage() {
+        guard let uid = FirebaseManager.shared.auth.currentUser?.uid,
+              let imageData = avatarImage?.jpegData(compressionQuality: 0.5)
+        else {
+            return
+        }
+        
+        let ref = FirebaseManager.shared.storage.reference(withPath: uid)
+        
+        ref.putData(imageData, metadata: nil) { metaData, error in
+            if let error = error {
+                print("Failed to push image to storage: \(error)")
+                return
+            }
+            
+            ref.downloadURL { url, error in
+                if let error = error {
+                    print("Failed to retrieve downloadURL: \(error)")
+                    return
+                }
+                
+                print("Successfully stored image with url: \(url?.absoluteString ?? "")")
+            }
         }
     }
     
