@@ -13,7 +13,7 @@ struct MainMessageListView: View {
             ForEach(0..<12, id: \.self) { _ in
                 VStack {
                     NavigationLink {
-                        Text("Destination")
+                        ChatLogView(chatUser: nil)
                     } label: {
                         MainMessageRow(
                             imageProfileUrl: "",

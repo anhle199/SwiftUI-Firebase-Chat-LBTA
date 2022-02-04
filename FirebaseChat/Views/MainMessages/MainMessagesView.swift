@@ -79,22 +79,6 @@ struct MainMessagesView: View {
     }
 }
 
-struct ChatLogView: View {
-    
-    let chatUser: ChatUser?
-    
-    var body: some View {
-        ScrollView {
-            ForEach(0..<12) { number in
-                Text("MESSAGE \(number)")
-            }
-        }
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationTitle(chatUser?.chatName ?? "Username")
-    }
-    
-}
-
 struct MainMessagesView_Previews: PreviewProvider {
     static var previews: some View {
         MainMessagesView()
