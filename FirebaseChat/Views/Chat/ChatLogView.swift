@@ -11,16 +11,39 @@ struct ChatLogView: View {
     
     let chatUser: ChatUser?
     
-    @State private var chatText = ""
+    @ObservedObject private var viewModel: ChatLogViewModel
+    
+    init(chatUser: ChatUser?) {
+        self.chatUser = chatUser
+        self.viewModel = ChatLogViewModel(chatUser: chatUser)
+    }
     
     var body: some View {
         VStack(spacing: 0) {
-            ChatLogMessageListView()
-                .padding(.top, 1)
-
-            Spacer()
-            
-            ChatBottomBar(chatText: $chatText)
+            if #available(iOS 15.0, *) {
+                ChatLogMessageListView()
+                    .safeAreaInset(edge: .bottom) {
+                        ChatBottomBar(
+                            chatText: $viewModel.chatText,
+                            didPressSendButton: viewModel.handSendMessage
+                        )
+                        .padding(.top, 4)
+                        .background(
+                            Color(.systemBackground)
+                                .ignoresSafeArea()
+                        )
+                    }
+            } else {
+                ChatLogMessageListView()
+                    .padding(.top, 1)
+                
+                Spacer()
+                
+                ChatBottomBar(
+                    chatText: $viewModel.chatText,
+                    didPressSendButton: viewModel.handSendMessage
+                )
+            }
         }
         .navigationTitle(chatUser?.chatName ?? "Username")
         .navigationBarTitleDisplayMode(.inline)
@@ -41,6 +64,5 @@ struct ChatLogView_Previews: PreviewProvider {
             ))
         }
         .navigationViewStyle(StackNavigationViewStyle())
-.previewInterfaceOrientation(.portrait)
     }
 }

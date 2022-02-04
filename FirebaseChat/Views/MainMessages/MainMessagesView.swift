@@ -37,7 +37,7 @@ struct MainMessagesView: View {
                 MainMessageListView()
                 
                 NavigationLink("", isActive: $shouldNavigateToChatLogView) {
-                    ChatLogView(chatUser: chatUser)
+                    ChatLogView(chatUser: self.chatUser)
                 }
             }
             .navigationBarHidden(true)

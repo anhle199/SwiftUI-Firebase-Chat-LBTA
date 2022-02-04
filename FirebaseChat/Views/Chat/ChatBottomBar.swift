@@ -11,6 +11,8 @@ struct ChatBottomBar: View {
     
     @Binding var chatText: String
     
+    let didPressSendButton: () -> Void
+    
     var body: some View {
         HStack(spacing: 12) {
             Button{
@@ -31,7 +33,7 @@ struct ChatBottomBar: View {
             .frame(height: 42)
             
             Button {
-                self.chatText = "This message is sent"
+                didPressSendButton()
             } label: {
                 Image(systemName: "paperplane.fill")
                     .foregroundColor(Color(.label))
@@ -53,6 +55,6 @@ struct ChatBottomBar: View {
 
 struct ChatBottomBar_Previews: PreviewProvider {
     static var previews: some View {
-        ChatBottomBar(chatText: .constant(""))
+        ChatBottomBar(chatText: .constant(""), didPressSendButton: {})
     }
 }
