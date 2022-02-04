@@ -10,13 +10,18 @@ import SwiftUI
 struct MainMessageListView: View {
     var body: some View {
         ScrollView {
-            ForEach(0..<5, id: \.self) { _ in
+            ForEach(0..<12, id: \.self) { _ in
                 VStack {
-                    MainMessageRow(
-                        imageProfileUrl: "",
-                        username: "Username",
-                        lastMessage: "Message sent to user"
-                    )
+                    NavigationLink {
+                        Text("Destination")
+                    } label: {
+                        MainMessageRow(
+                            imageProfileUrl: "",
+                            username: "Username",
+                            lastMessage: "Message sent to user"
+                        )
+                            .foregroundColor(Color(.label))
+                    }
                     
                     // Separator of each messages
                     Divider()
