@@ -20,8 +20,33 @@ final class LoginViewModel: ObservableObject {
     
     @Published var errorMessage = ""
     
+    enum Field {
+        case chatName
+        case email
+        case password
+    }
     
-    func loginUser() {
+    // This variable is used to determine which field is focused
+    // when pressing login or create account button
+    @FocusState var focusedField: Field?
+    
+    func handLoginOrCreateAccountButton(isLoginMode: Bool) {
+        if !isLoginMode && chatName.isEmpty {
+            focusedField = .chatName
+        } else if email.isEmpty {
+            focusedField = .email
+        } else if password.isEmpty {
+            focusedField = .password
+        } else {
+            if isLoginMode {
+                loginUser()
+            } else {
+                createNewAccount()
+            }
+        }
+    }
+    
+    private func loginUser() {
         FirebaseManager.shared.auth.signIn(
             withEmail: email,   // "testaccount1@gmail.com",
             password: password  // "123123"
@@ -36,7 +61,7 @@ final class LoginViewModel: ObservableObject {
         }
     }
     
-    func createNewAccount() {
+    private func createNewAccount() {
         guard let _ = avatarImage else {
             self.errorMessage = "You must select an image"
             return
@@ -57,7 +82,7 @@ final class LoginViewModel: ObservableObject {
     }
     
     private func persistImageToStorage() {
-        guard let uid = FirebaseManager.shared.auth.currentUser?.uid,
+        guard let uid = FirebaseManager.currentUserID,
               let imageData = avatarImage?.jpegData(compressionQuality: 0.5)
         else {
             return
@@ -91,7 +116,7 @@ final class LoginViewModel: ObservableObject {
     }
     
     private func storeUserInformation(imageProfileUrl: URL) {
-        guard let uid = FirebaseManager.shared.auth.currentUser?.uid else {
+        guard let uid = FirebaseManager.currentUserID else {
             return
         }
         

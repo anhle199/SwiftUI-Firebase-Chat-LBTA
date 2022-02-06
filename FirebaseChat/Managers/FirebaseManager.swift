@@ -13,6 +13,11 @@ struct FirebaseManager {
     // Singleton object
     static let shared = FirebaseManager()
     
+    // Get the ID of currently logged in user
+    static var currentUserID: String? {
+        return FirebaseManager.shared.auth.currentUser?.uid
+    }
+    
     // Firebase services
     let auth: Auth
     let storage: Storage

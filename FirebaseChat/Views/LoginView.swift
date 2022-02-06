@@ -18,6 +18,8 @@ struct LoginView: View {
     // State variables to show and get avatar image from user
     @State private var shouldShowImagePicker = false
     
+    // A callback function which performs a block code
+    // after the process of login or register account is completed
     let didCompleteLogInAndRegisterProcess: () -> Void
     
     var body: some View {
@@ -67,15 +69,18 @@ struct LoginView: View {
                         if !isLoginMode {
                             // Chat name text field
                             TextField("Chat name", text: $viewModel.chatName)
+                                .focused(viewModel.$focusedField, equals: .chatName)
                         }
                         
                         // Email text field
                         TextField("Email", text: $viewModel.email)
                             .keyboardType(.emailAddress)
                             .textInputAutocapitalization(.never)
+                            .focused(viewModel.$focusedField, equals: .email)
                         
                         // Password text field
                         SecureField("Password", text: $viewModel.password)
+                            .focused(viewModel.$focusedField, equals: .password)
                     }
                     .padding(12)
                     .background(Color.white)
@@ -83,11 +88,9 @@ struct LoginView: View {
                     
                     // Login or create account button
                     Button {
-                        if isLoginMode {
-                            viewModel.loginUser()
-                        } else {
-                            viewModel.createNewAccount()
-                        }
+                        viewModel.handLoginOrCreateAccountButton(
+                            isLoginMode: isLoginMode
+                        )
                     } label: {
                         HStack {
                             Spacer()
@@ -132,6 +135,5 @@ struct LoginView: View {
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
         LoginView(didCompleteLogInAndRegisterProcess: {})
-            
     }
 }

@@ -9,33 +9,39 @@ import SwiftUI
 
 struct ChatLogMessageListView: View {
     
+    // View model of ChatLogView
     @ObservedObject var viewModel: ChatLogViewModel
+    
+    // A string is used to indicate id of a specific view for
+    // automatically scroll to end
+    private static let emptyScrollToLastMessage = "emptyScrollToLastMessage"
     
     var body: some View {
         ScrollView {
-            ForEach(viewModel.chatMessages) { message in
-                let isRightSide = message.toId == viewModel.chatUser?.uid
-                HStack {
-                    if isRightSide {
-                        Spacer()
+            ScrollViewReader { proxy in
+                VStack(spacing: 0) {
+                    ForEach(viewModel.chatMessages) { message in
+                        MessageView(
+                            message,
+                            atRightSide: message.fromId == FirebaseManager.currentUserID
+                        )
                     }
                     
-                    Text(message.text)
-                        .foregroundColor(isRightSide ? .white : .black)
-                        .padding()
-                        .background(isRightSide ? Color.blue : Color.white)
-                        .cornerRadius(8)
-                    
-                    if !isRightSide {
-                        Spacer()
-                    }
+                    HStack(content: {})
+                        .id(Self.emptyScrollToLastMessage)
                 }
-                .padding(.horizontal)
-                .padding(.top, 8)
+                .onReceive(viewModel.$fireAutoScrolling) { _ in
+                    withAnimation(.easeOut(duration: 0.5)) {
+                        proxy.scrollTo(
+                            Self.emptyScrollToLastMessage,
+                            anchor: .bottom
+                        )
+                    }
+                    
+                    print("Here")
+                }
             }
-            .padding(.bottom, 8)
         }
-        .background(Color(.init(white: 0.95, alpha: 1)))
     }
 }
 
@@ -53,5 +59,6 @@ struct ChatLogMessageListView_Previews: PreviewProvider {
                 )
             )
         )
+            .background(Color(.init(white: 0.95, alpha: 1)))
     }
 }

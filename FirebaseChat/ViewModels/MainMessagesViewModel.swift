@@ -17,7 +17,7 @@ final class MainMessagesViewModel: ObservableObject {
     
     init() {
         DispatchQueue.main.async {
-            self.isUserCurrentlyLoggedOut = FirebaseManager.shared.auth.currentUser?.uid == nil
+            self.isUserCurrentlyLoggedOut = FirebaseManager.currentUserID == nil
         }
         
         fetchCurrentUser()
@@ -25,7 +25,7 @@ final class MainMessagesViewModel: ObservableObject {
     
     func fetchCurrentUser() {
         print("Starts fetching current user")
-        guard let uid = FirebaseManager.shared.auth.currentUser?.uid else {
+        guard let uid = FirebaseManager.currentUserID else {
             print("Could not find firebase uid")
             return
         }

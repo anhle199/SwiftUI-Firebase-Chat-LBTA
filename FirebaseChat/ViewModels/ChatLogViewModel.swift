@@ -15,6 +15,9 @@ final class ChatLogViewModel: ObservableObject {
     @Published var chatText: String
     let chatUser: ChatUser?
     
+    //
+    @Published var fireAutoScrolling = false
+    
     init(chatUser: ChatUser?) {
         self.chatText = ""
         self.chatUser = chatUser
@@ -24,7 +27,7 @@ final class ChatLogViewModel: ObservableObject {
     }
     
     private func fecthMessages() {
-        guard let fromId = FirebaseManager.shared.auth.currentUser?.uid,
+        guard let fromId = FirebaseManager.currentUserID,
               let toId = chatUser?.uid
         else {
             return
@@ -51,7 +54,13 @@ final class ChatLogViewModel: ObservableObject {
                         )
                     }
                 }
+
+                // Performs automatically scroll
+                DispatchQueue.main.async {
+                    self.fireAutoScrolling.toggle()
+                }
             }
+        
     }
     
     func handSendMessage() {
@@ -61,7 +70,7 @@ final class ChatLogViewModel: ObservableObject {
             return
         }
         
-        guard let fromId = FirebaseManager.shared.auth.currentUser?.uid,
+        guard let fromId = FirebaseManager.currentUserID,
               let toId = chatUser?.uid
         else {
             return
@@ -91,6 +100,11 @@ final class ChatLogViewModel: ObservableObject {
             
             self.chatText = ""
             print("Successfully saved message at the sender side")
+            
+            // Performs automatically scroll
+            DispatchQueue.main.async {
+                self.fireAutoScrolling.toggle()
+            }
         }
     
         // Get receiver document

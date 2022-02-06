@@ -25,6 +25,7 @@ struct ChatLogView: View {
             // safeAreaInset modifier only available on the iOS 15.0 or later.
             if #available(iOS 15.0, *) {
                 ChatLogMessageListView(viewModel: viewModel)
+                    .background(Color(.init(white: 0.95, alpha: 1)))
                     .safeAreaInset(edge: .bottom) {
                         ChatBottomBar(
                             chatText: $viewModel.chatText,
@@ -38,7 +39,8 @@ struct ChatLogView: View {
                     }
             } else {
                 ChatLogMessageListView(viewModel: viewModel)
-                    .padding(.top, 1)
+                    .padding(.bottom, 8)  // padding for last message
+                    .background(Color(.init(white: 0.95, alpha: 1)))
                 
                 Spacer()
                 

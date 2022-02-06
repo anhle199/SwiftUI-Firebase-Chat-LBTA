@@ -16,7 +16,7 @@ final class CreateNewMessageViewModel: ObservableObject {
     }
     
     func fetchAllUsers() {
-        guard let uid = FirebaseManager.shared.auth.currentUser?.uid else {
+        guard let uid = FirebaseManager.currentUserID else {
             print("Cannot get current user id")
             return
         }

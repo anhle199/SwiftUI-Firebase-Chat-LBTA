@@ -20,6 +20,7 @@
 		E679A6CE27AD1AD500DF9A7A /* ChatLogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E679A6CD27AD1AD500DF9A7A /* ChatLogViewModel.swift */; };
 		E681AD2727AFAD520005C0ED /* ChatMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E681AD2627AFAD520005C0ED /* ChatMessage.swift */; };
 		E681AD2A27AFADD90005C0ED /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E681AD2927AFADD90005C0ED /* Constants.swift */; };
+		E681AD2C27AFEEF00005C0ED /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E681AD2B27AFEEF00005C0ED /* MessageView.swift */; };
 		E68E656927AC5E2A001EF161 /* CreateNewMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E68E656827AC5E2A001EF161 /* CreateNewMessageView.swift */; };
 		E68E656D27AC622E001EF161 /* CreateNewMessageRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E68E656C27AC622E001EF161 /* CreateNewMessageRow.swift */; };
 		E68E656F27AC6766001EF161 /* CreateNewMessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E68E656E27AC6766001EF161 /* CreateNewMessageViewModel.swift */; };
@@ -51,6 +52,7 @@
 		E679A6CD27AD1AD500DF9A7A /* ChatLogViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLogViewModel.swift; sourceTree = "<group>"; };
 		E681AD2627AFAD520005C0ED /* ChatMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessage.swift; sourceTree = "<group>"; };
 		E681AD2927AFADD90005C0ED /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		E681AD2B27AFEEF00005C0ED /* MessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
 		E68E656827AC5E2A001EF161 /* CreateNewMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewMessageView.swift; sourceTree = "<group>"; };
 		E68E656C27AC622E001EF161 /* CreateNewMessageRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewMessageRow.swift; sourceTree = "<group>"; };
 		E68E656E27AC6766001EF161 /* CreateNewMessageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewMessageViewModel.swift; sourceTree = "<group>"; };
@@ -167,6 +169,7 @@
 				E657A67727ACF1F10062FA95 /* ChatLogView.swift */,
 				E60132C627AD0174002CC05B /* ChatLogMessageListView.swift */,
 				E60132C827AD018F002CC05B /* ChatBottomBar.swift */,
+				E681AD2B27AFEEF00005C0ED /* MessageView.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -297,6 +300,7 @@
 				E6DA314027ABFB3F0091C655 /* MainMessagesViewModel.swift in Sources */,
 				E6094B0727ABE83900940CA9 /* MainMessageListView.swift in Sources */,
 				E68E656D27AC622E001EF161 /* CreateNewMessageRow.swift in Sources */,
+				E681AD2C27AFEEF00005C0ED /* MessageView.swift in Sources */,
 				E6094AFF27ABD21000940CA9 /* MainMessagesView.swift in Sources */,
 				E657A67827ACF1F10062FA95 /* ChatLogView.swift in Sources */,
 				E68E656927AC5E2A001EF161 /* CreateNewMessageView.swift in Sources */,
