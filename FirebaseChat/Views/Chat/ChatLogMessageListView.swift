@@ -8,17 +8,27 @@
 import SwiftUI
 
 struct ChatLogMessageListView: View {
+    
+    @ObservedObject var viewModel: ChatLogViewModel
+    
     var body: some View {
         ScrollView {
-            ForEach(0..<19) { number in
+            ForEach(viewModel.chatMessages) { message in
+                let isRightSide = message.toId == viewModel.chatUser?.uid
                 HStack {
-                    Spacer()
+                    if isRightSide {
+                        Spacer()
+                    }
                     
-                    Text("MESSAGE \(number)")
-                        .foregroundColor(.white)
+                    Text(message.text)
+                        .foregroundColor(isRightSide ? .white : .black)
                         .padding()
-                        .background(Color.blue)
+                        .background(isRightSide ? Color.blue : Color.white)
                         .cornerRadius(8)
+                    
+                    if !isRightSide {
+                        Spacer()
+                    }
                 }
                 .padding(.horizontal)
                 .padding(.top, 8)
@@ -31,6 +41,17 @@ struct ChatLogMessageListView: View {
 
 struct ChatLogMessageListView_Previews: PreviewProvider {
     static var previews: some View {
-        ChatLogMessageListView()
+        ChatLogMessageListView(
+            viewModel: ChatLogViewModel(
+                chatUser: ChatUser(
+                    from: [
+                        "chatName": "Test Account 6",
+                        "email": "testaccount6@gmail.com",
+                        "imageProfileUrl": "https://firebasestorage.googleapis.com:443/v0/b/swiftui-firebase-chat-lbta.appspot.com/o/3A67ywYkxNg5TtMuULj8fYFFSWY2?alt=media&token=72c3eacc-6553-411f-b797-e750f2701837",
+                        "uid": "3A67ywYkxNg5TtMuULj8fYFFSWY2",
+                    ]
+                )
+            )
+        )
     }
 }

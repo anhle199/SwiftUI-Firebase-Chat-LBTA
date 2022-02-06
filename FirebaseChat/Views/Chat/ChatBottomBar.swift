@@ -9,8 +9,10 @@ import SwiftUI
 
 struct ChatBottomBar: View {
     
+    // A message will be sent to receiver by you
     @Binding var chatText: String
     
+    // A callback function to handle the press of send button
     let didPressSendButton: () -> Void
     
     var body: some View {
@@ -44,6 +46,7 @@ struct ChatBottomBar: View {
         .padding(.horizontal)
     }
  
+    // A placeholder will be shown when the message is empty
     @ViewBuilder
     private func TypingMessagePlaceholder() -> some View {
         Text("Type message here")

@@ -9,8 +9,10 @@ import SwiftUI
 
 struct ChatLogView: View {
     
+    // Optional variable stores receiver information
     let chatUser: ChatUser?
     
+    // View model
     @ObservedObject private var viewModel: ChatLogViewModel
     
     init(chatUser: ChatUser?) {
@@ -20,8 +22,9 @@ struct ChatLogView: View {
     
     var body: some View {
         VStack(spacing: 0) {
+            // safeAreaInset modifier only available on the iOS 15.0 or later.
             if #available(iOS 15.0, *) {
-                ChatLogMessageListView()
+                ChatLogMessageListView(viewModel: viewModel)
                     .safeAreaInset(edge: .bottom) {
                         ChatBottomBar(
                             chatText: $viewModel.chatText,
@@ -34,7 +37,7 @@ struct ChatLogView: View {
                         )
                     }
             } else {
-                ChatLogMessageListView()
+                ChatLogMessageListView(viewModel: viewModel)
                     .padding(.top, 1)
                 
                 Spacer()
