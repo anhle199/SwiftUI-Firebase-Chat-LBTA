@@ -34,7 +34,7 @@ struct MainMessagesView: View {
                 )
                 
                 // List of scrollable messages
-                MainMessageListView()
+                MainMessageListView(viewModel: viewModel)
                 
                 NavigationLink("", isActive: $shouldNavigateToChatLogView) {
                     ChatLogView(chatUser: self.chatUser)

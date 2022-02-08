@@ -6,10 +6,11 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct MainMessageRow: View {
     
-    let imageProfileUrl: String
+    let profileImageUrl: String
     let username: String
     let lastMessage: String
     
@@ -17,13 +18,21 @@ struct MainMessageRow: View {
         // Message row
         HStack(spacing: 16) {
             // Sent user's avatar
-            Image(systemName: "person.fill")
-                .font(.system(size: 32))
-                .padding(8)
+            WebImage(url: URL(string: profileImageUrl))
+                .placeholder {
+                    Image(systemName: "person.fill")
+                        .font(.system(size: 32))
+                }
+                .resizable()
+                .scaledToFill()
+                .frame(width: 64, height: 64)
+                .clipped()
+                .cornerRadius(64)
                 .overlay(
-                    RoundedRectangle(cornerRadius: 44)
+                    RoundedRectangle(cornerRadius: 64)
                         .stroke(Color(.label), lineWidth: 1)
                 )
+                .shadow(radius: 5)
             
             // Sent user's information
             VStack(alignment: .leading, spacing: 4) {
@@ -33,6 +42,8 @@ struct MainMessageRow: View {
                 Text(lastMessage)
                     .font(.system(size: 14))
                     .foregroundColor(.secondary)
+                    .multilineTextAlignment(.leading)
+                    .lineLimit(3)
             }
             
             Spacer()
@@ -47,7 +58,7 @@ struct MainMessageRow: View {
 struct MainMessageRow_Previews: PreviewProvider {
     static var previews: some View {
         MainMessageRow(
-            imageProfileUrl: "",
+            profileImageUrl: "",
             username: "Username",
             lastMessage: "Message sent to user"
         )

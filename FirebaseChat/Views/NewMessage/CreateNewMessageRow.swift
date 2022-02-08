@@ -16,7 +16,7 @@ struct CreateNewMessageRow: View {
     var body: some View {
         HStack(spacing: 16) {
             // User avatar image
-            WebImage(url: URL(string: user.imageProfileUrl))
+            WebImage(url: URL(string: user.profileImageUrl))
                 .placeholder {
                     Image(systemName: "person.fill")
                         .font(.system(size: 34, weight: .heavy))

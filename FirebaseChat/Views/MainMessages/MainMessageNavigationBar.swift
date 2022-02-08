@@ -20,7 +20,7 @@ struct MainMessageNavigationBar: View {
     var body: some View {
         HStack {
             // Profile avatar
-            WebImage(url: URL(string: viewModel.currentUser?.imageProfileUrl ?? ""))
+            WebImage(url: URL(string: viewModel.currentUser?.profileImageUrl ?? ""))
                 .placeholder {
                     Image(systemName: "person.fill")
                         .font(.system(size: 34, weight: .heavy))

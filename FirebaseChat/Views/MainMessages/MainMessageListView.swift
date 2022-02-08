@@ -8,19 +8,32 @@
 import SwiftUI
 
 struct MainMessageListView: View {
+    
+    // View model
+    @ObservedObject var viewModel: MainMessagesViewModel
+    
     var body: some View {
         ScrollView {
-            ForEach(0..<12, id: \.self) { _ in
+            ForEach(viewModel.recentMessages) { recentMessage in
                 VStack {
+                    let chatUser = ChatUser(
+                        uid: recentMessage.fromId == FirebaseManager.currentUserID
+                        ? recentMessage.toId
+                        : recentMessage.fromId,
+                        email: "Currently not yet",
+                        chatName: recentMessage.chatName,
+                        profileImageUrl: recentMessage.profileImageUrl
+                    )
+                    
                     NavigationLink {
-                        ChatLogView(chatUser: nil)
+                        ChatLogView(chatUser: chatUser)
                     } label: {
                         MainMessageRow(
-                            imageProfileUrl: "",
-                            username: "Username",
-                            lastMessage: "Message sent to user"
+                            profileImageUrl: recentMessage.profileImageUrl,
+                            username: recentMessage.chatName,
+                            lastMessage: recentMessage.chatText
                         )
-                            .foregroundColor(Color(.label))
+                        .foregroundColor(Color(.label))
                     }
                     
                     // Separator of each messages
@@ -37,6 +50,6 @@ struct MainMessageListView: View {
 
 struct MainMessageListView_Previews: PreviewProvider {
     static var previews: some View {
-        MainMessageListView()
+        MainMessageListView(viewModel: MainMessagesViewModel())
     }
 }

@@ -15,12 +15,17 @@ final class MainMessagesViewModel: ObservableObject {
     // This variable determines whether the current user is logged out or not
     @Published var isUserCurrentlyLoggedOut = false
     
+    @Published var recentMessages = [RecentMessage]()
+    
     init() {
         DispatchQueue.main.async {
             self.isUserCurrentlyLoggedOut = FirebaseManager.currentUserID == nil
         }
         
-        fetchCurrentUser()
+        if !isUserCurrentlyLoggedOut {
+            fetchCurrentUser()
+            fetchRecentMessages()
+        }
     }
     
     func fetchCurrentUser() {
@@ -40,8 +45,50 @@ final class MainMessagesViewModel: ObservableObject {
                 }
                 
                 self.currentUser = ChatUser(from: data)
+                FirebaseManager.shared.currentUser = self.currentUser
                 print("Successfully fetched current user")
             }
+    }
+    
+    func fetchRecentMessages() {
+        guard let uid = FirebaseManager.currentUserID else {
+            return
+        }
+        
+        FirebaseManager.shared.firestore
+            .collection("recent_messages")
+            .document(uid)
+            .collection("messages")
+            .order(by: FirebaseConstants.sentAt)
+            .addSnapshotListener { querySnapshot, error in
+                if let error = error {
+                    print("Failed to listen to recent messages: \(error)")
+                    return
+                }
+                
+                querySnapshot?.documentChanges.forEach { change in
+                    let documentId = change.document.documentID
+                    
+                    // Remove recent message
+                    if let index = self.recentMessages.firstIndex(
+                        where: { $0.documentId == documentId }
+                    ) {
+                        self.recentMessages.remove(at: index)
+                    }
+                    
+                    if change.type == .added || change.type == .modified {
+                        // Insert newly recent message
+                        self.recentMessages.insert(
+                            RecentMessage(
+                                docId: documentId,
+                                data: change.document.data()
+                            ),
+                            at: 0
+                        )
+                    }
+                }
+            }
+        
     }
     
     func handleSignOut() {

@@ -12,4 +12,6 @@ struct FirebaseConstants {
     static let toId = "toId"
     static let chatText = "chatText"
     static let sentAt = "timestamp"
+    static let chatName = "chatName"
+    static let profileImageUrl = "profileImageUrl"
 }

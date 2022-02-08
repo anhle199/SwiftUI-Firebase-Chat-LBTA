@@ -9,7 +9,7 @@ import Firebase
 import FirebaseFirestore
 
 // Applying singleton pattern
-struct FirebaseManager {
+class FirebaseManager: NSObject {
     // Singleton object
     static let shared = FirebaseManager()
     
@@ -18,17 +18,21 @@ struct FirebaseManager {
         return FirebaseManager.shared.auth.currentUser?.uid
     }
     
+    var currentUser: ChatUser?
+    
     // Firebase services
     let auth: Auth
     let storage: Storage
     let firestore: Firestore
     
-    private init() {
+    private override init() {
         FirebaseApp.configure()
         
         // Initialize Firebase services
         self.auth = Auth.auth()
         self.storage = Storage.storage()
         self.firestore = Firestore.firestore()
+        
+        super.init()
     }
 }

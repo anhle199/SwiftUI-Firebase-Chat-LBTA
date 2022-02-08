@@ -109,13 +109,13 @@ final class LoginViewModel: ObservableObject {
                 safeSelf.errorMessage = "Successfully stored image with url: \(url?.absoluteString ?? "")"
                 
                 if let url = url {
-                    safeSelf.storeUserInformation(imageProfileUrl: url)
+                    safeSelf.storeUserInformation(profileImageUrl: url)
                 }
             }
         }
     }
     
-    private func storeUserInformation(imageProfileUrl: URL) {
+    private func storeUserInformation(profileImageUrl: URL) {
         guard let uid = FirebaseManager.currentUserID else {
             return
         }
@@ -125,7 +125,7 @@ final class LoginViewModel: ObservableObject {
             "uid": uid,
             "email": email,
             "chatName": chatName,
-            "imageProfileUrl": imageProfileUrl.absoluteString
+            "profileImageUrl": profileImageUrl.absoluteString
         ]
         
         FirebaseManager.shared.firestore

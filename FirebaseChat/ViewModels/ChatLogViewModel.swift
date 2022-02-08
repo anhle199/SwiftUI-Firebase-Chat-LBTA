@@ -77,11 +77,12 @@ final class ChatLogViewModel: ObservableObject {
         }
         
         // Message data
+        let now = Timestamp()
         let messageData: [String: Any] = [
             FirebaseConstants.fromId: fromId,
             FirebaseConstants.toId: toId,
             FirebaseConstants.chatText: chatText,
-            FirebaseConstants.sentAt: Timestamp(),
+            FirebaseConstants.sentAt: now,
         ]
         
         // Get sender document
@@ -97,7 +98,9 @@ final class ChatLogViewModel: ObservableObject {
                 print("Error when saving message which is sent from \(fromId) to \(toId), error: \(error)")
                 return
             }
-            
+
+
+            self.persistRecentMessage(at: now)
             self.chatText = ""
             print("Successfully saved message at the sender side")
             
@@ -123,6 +126,65 @@ final class ChatLogViewModel: ObservableObject {
             
             print("Successfully saved message at the receiver side")
         }
+    }
+    
+    private func persistRecentMessage(at sentAt: Timestamp) {
+        guard let chatUser = chatUser,
+              let fromId = FirebaseManager.currentUserID
+        else {
+            return
+        }
+        
+        let toId = chatUser.uid
+        
+        // Recent message information is saved at the sender side
+        let senderData: [String: Any] = [
+            FirebaseConstants.fromId: fromId,
+            FirebaseConstants.toId: toId,
+            FirebaseConstants.chatText: chatText,
+            FirebaseConstants.sentAt: sentAt,
+            FirebaseConstants.chatName: chatUser.chatName,
+            FirebaseConstants.profileImageUrl: chatUser.profileImageUrl,
+        ]
+        
+        // Starts saving at the sender side
+        FirebaseManager.shared.firestore
+            .collection("recent_messages")
+            .document(fromId)
+            .collection("messages")
+            .document(toId)
+            .setData(senderData) { error in
+                if let error = error {
+                    print("Failed to save recent message, error: \(error)")
+                    return
+                }
+            }
+       
+        // Get the current user information
+        guard let currentUser = FirebaseManager.shared.currentUser else { return }
+        
+        // Recent message information is saved at the receiver side
+        let receiverData: [String: Any] = [
+            FirebaseConstants.fromId: fromId,
+            FirebaseConstants.toId: toId,
+            FirebaseConstants.chatText: chatText,
+            FirebaseConstants.sentAt: sentAt,
+            FirebaseConstants.chatName: currentUser.chatName,
+            FirebaseConstants.profileImageUrl: currentUser.profileImageUrl,
+        ]
+        
+        // Starts saving at the receiver side
+        FirebaseManager.shared.firestore
+            .collection("recent_messages")
+            .document(toId)
+            .collection("messages")
+            .document(fromId)
+            .setData(receiverData) { error in
+                if let error = error {
+                    print("Failed to save recent message, error: \(error)")
+                    return
+                }
+            }
     }
     
 }
