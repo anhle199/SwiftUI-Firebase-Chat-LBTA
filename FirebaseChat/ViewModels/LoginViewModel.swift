@@ -20,29 +20,11 @@ final class LoginViewModel: ObservableObject {
     
     @Published var errorMessage = ""
     
-    enum Field {
-        case chatName
-        case email
-        case password
-    }
-    
-    // This variable is used to determine which field is focused
-    // when pressing login or create account button
-    @FocusState var focusedField: Field?
-    
     func handLoginOrCreateAccountButton(isLoginMode: Bool) {
-        if !isLoginMode && chatName.isEmpty {
-            focusedField = .chatName
-        } else if email.isEmpty {
-            focusedField = .email
-        } else if password.isEmpty {
-            focusedField = .password
+        if isLoginMode {
+            loginUser()
         } else {
-            if isLoginMode {
-                loginUser()
-            } else {
-                createNewAccount()
-            }
+            createNewAccount()
         }
     }
     
@@ -121,17 +103,20 @@ final class LoginViewModel: ObservableObject {
         }
         
         // User data needs to store
-        let userData = [
-            "uid": uid,
-            "email": email,
-            "chatName": chatName,
-            "profileImageUrl": profileImageUrl.absoluteString
-        ]
+        let userData = ChatUser(
+            uid: uid,
+            email: email,
+            chatName: chatName,
+            profileImageUrl: profileImageUrl.absoluteString
+        )
         
-        FirebaseManager.shared.firestore
+        // Reference to firestore document object
+        let docRef = FirebaseManager.shared.firestore
             .collection("users")
             .document(uid)
-            .setData(userData) { error in
+        
+        do {
+            try docRef.setData(from: userData) { error in
                 if let error = error {
                     self.errorMessage = "Failed to store user information in Firestore: \(error)"
                     return
@@ -140,6 +125,9 @@ final class LoginViewModel: ObservableObject {
                 self.isLoggedInOrRegistered = true
                 self.errorMessage = "Successfully stored user information in Firestore"
             }
+        } catch {
+            print("Error when encoding chat user information, error: \(error)")
+        }
     }
     
 }

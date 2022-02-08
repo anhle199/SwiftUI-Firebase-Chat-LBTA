@@ -10,8 +10,8 @@ import Foundation
 struct FirebaseConstants {
     static let fromId = "fromId"
     static let toId = "toId"
-    static let chatText = "chatText"
-    static let sentAt = "timestamp"
+    static let chatText = "text"
+    static let sentAt = "sentAt"
     static let chatName = "chatName"
     static let profileImageUrl = "profileImageUrl"
 }

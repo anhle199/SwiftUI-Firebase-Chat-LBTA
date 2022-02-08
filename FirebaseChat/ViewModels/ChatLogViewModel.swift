@@ -7,6 +7,7 @@
 
 import Foundation
 import Firebase
+import FirebaseFirestoreSwift
 
 final class ChatLogViewModel: ObservableObject {
     
@@ -38,20 +39,23 @@ final class ChatLogViewModel: ObservableObject {
             .document(fromId)
             .collection(toId)
             .order(by: FirebaseConstants.sentAt)
-            .addSnapshotListener { querySnapshot, error in
-                if let error = error {
-                    print("Failed to listen to messages: \(error)")
+            .addSnapshotListener { querySnapshot, err in
+                if let err = err {
+                    print("Failed to listen to messages: \(err)")
                     return
                 }
                 
                 querySnapshot?.documentChanges.forEach { change in
                     if change.type == .added {
-                        self.chatMessages.append(
-                            ChatMessage(
-                                documentId: change.document.documentID,
-                                data: change.document.data()
-                            )
-                        )
+                        do {
+                            if let chatMessage = try change.document.data(
+                                as: ChatMessage.self
+                            ) {
+                                self.chatMessages.append(chatMessage)
+                            }
+                        } catch {
+                            print("Error when decoding chat message, error: \(error)")
+                        }
                     }
                 }
 

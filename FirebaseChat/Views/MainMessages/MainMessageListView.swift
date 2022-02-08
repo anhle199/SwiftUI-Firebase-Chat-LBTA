@@ -28,12 +28,8 @@ struct MainMessageListView: View {
                     NavigationLink {
                         ChatLogView(chatUser: chatUser)
                     } label: {
-                        MainMessageRow(
-                            profileImageUrl: recentMessage.profileImageUrl,
-                            username: recentMessage.chatName,
-                            lastMessage: recentMessage.chatText
-                        )
-                        .foregroundColor(Color(.label))
+                        MainMessageRow(with: recentMessage)
+                            .foregroundColor(Color(.label))
                     }
                     
                     // Separator of each messages

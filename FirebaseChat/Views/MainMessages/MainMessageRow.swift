@@ -10,15 +10,17 @@ import SDWebImageSwiftUI
 
 struct MainMessageRow: View {
     
-    let profileImageUrl: String
-    let username: String
-    let lastMessage: String
+    let recentMessage: RecentMessage
+    
+    init(with recentMessage: RecentMessage) {
+        self.recentMessage = recentMessage
+    }
     
     var body: some View {
         // Message row
         HStack(spacing: 16) {
             // Sent user's avatar
-            WebImage(url: URL(string: profileImageUrl))
+            WebImage(url: URL(string: recentMessage.profileImageUrl))
                 .placeholder {
                     Image(systemName: "person.fill")
                         .font(.system(size: 32))
@@ -36,31 +38,44 @@ struct MainMessageRow: View {
             
             // Sent user's information
             VStack(alignment: .leading, spacing: 4) {
-                Text(username)
+                Text(recentMessage.chatName)
                     .font(.system(size: 16, weight: .bold))
+                    .multilineTextAlignment(.leading)
+                    .lineLimit(1)
                 
-                Text(lastMessage)
+                let prefix = getPrefixOfRecentMessage(senderID: recentMessage.fromId)
+                Text(prefix + recentMessage.text)
                     .font(.system(size: 14))
                     .foregroundColor(.secondary)
                     .multilineTextAlignment(.leading)
-                    .lineLimit(3)
+                    .lineLimit(2)
             }
             
             Spacer()
             
             // Duration from the last message which is sent
-            Text("19th")
+            Text(recentMessage.sentAt.description)
                 .font(.system(size: 14, weight: .semibold))
         }
+    }
+    
+    func getPrefixOfRecentMessage(senderID: String) -> String {
+        return recentMessage.fromId == FirebaseManager.currentUserID ? "You: " : ""
     }
 }
 
 struct MainMessageRow_Previews: PreviewProvider {
     static var previews: some View {
         MainMessageRow(
-            profileImageUrl: "",
-            username: "Username",
-            lastMessage: "Message sent to user"
+            with: .init(
+                id: "",
+                fromId: "",
+                toId: "",
+                text: "jknaskdfnasjkdnfkjasdfjkasndfjkansdjkfnasjkdfnkasjdfkjasndfkjansdkfjnasdkjfnkasjdnf",
+                sentAt: Date(),
+                chatName: "Pikachu",
+                profileImageUrl: ""
+            )
         )
     }
 }

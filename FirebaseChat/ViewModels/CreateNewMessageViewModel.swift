@@ -7,6 +7,7 @@
 
 import Foundation
 import SDWebImageSwiftUI
+import FirebaseFirestoreSwift
 
 final class CreateNewMessageViewModel: ObservableObject {
     @Published var users = [ChatUser]()
@@ -24,15 +25,21 @@ final class CreateNewMessageViewModel: ObservableObject {
         FirebaseManager.shared.firestore
             .collection("users")
             .whereField("uid", isNotEqualTo: uid)
-            .getDocuments { documentsSnapshot, error in
-                guard let documentsSnapshot = documentsSnapshot, error == nil
+            .getDocuments { documentsSnapshot, err in
+                guard let documentsSnapshot = documentsSnapshot, err == nil
                 else {
                     print("Cannot get documents from firestore")
                     return
                 }
                 
                 documentsSnapshot.documents.forEach { snapshot in
-                    self.users.append(ChatUser(from: snapshot.data()))
+                    do {
+                        if let chatUser = try snapshot.data(as: ChatUser.self) {
+                            self.users.append(chatUser)
+                        }
+                    } catch {
+                        print("Error when decoding chat user information, error: \(error)")
+                    }
                 }
             }
     }

@@ -59,14 +59,14 @@ struct ChatLogView: View {
 struct ChatLogView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            ChatLogView(chatUser: ChatUser(
-                from: [
-                    "chatName": "Test Account 6",
-                    "email": "testaccount6@gmail.com",
-                    "profileImageUrl": "https://firebasestorage.googleapis.com:443/v0/b/swiftui-firebase-chat-lbta.appspot.com/o/3A67ywYkxNg5TtMuULj8fYFFSWY2?alt=media&token=72c3eacc-6553-411f-b797-e750f2701837",
-                    "uid": "3A67ywYkxNg5TtMuULj8fYFFSWY2",
-                ]
-            ))
+            ChatLogView(
+                chatUser: ChatUser(
+                    uid: "",
+                    email: "",
+                    chatName: "",
+                    profileImageUrl: ""
+                )
+            )
         }
         .navigationViewStyle(StackNavigationViewStyle())
     }

@@ -69,18 +69,15 @@ struct LoginView: View {
                         if !isLoginMode {
                             // Chat name text field
                             TextField("Chat name", text: $viewModel.chatName)
-                                .focused(viewModel.$focusedField, equals: .chatName)
                         }
                         
                         // Email text field
                         TextField("Email", text: $viewModel.email)
                             .keyboardType(.emailAddress)
                             .textInputAutocapitalization(.never)
-                            .focused(viewModel.$focusedField, equals: .email)
                         
                         // Password text field
                         SecureField("Password", text: $viewModel.password)
-                            .focused(viewModel.$focusedField, equals: .password)
                     }
                     .padding(12)
                     .background(Color.white)

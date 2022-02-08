@@ -81,6 +81,7 @@ struct MainMessageNavigationBar: View {
             LoginView(didCompleteLogInAndRegisterProcess: {
                 viewModel.isUserCurrentlyLoggedOut = false
                 viewModel.fetchCurrentUser()
+                viewModel.fetchRecentMessages()
             })
         }
     }

@@ -49,6 +49,13 @@ struct CreateNewMessageRow: View {
 
 struct CreateNewMessageRow_Previews: PreviewProvider {
     static var previews: some View {
-        CreateNewMessageRow(user: .init(from: [:]))
+        CreateNewMessageRow(
+            user: ChatUser(
+                uid: "",
+                email: "",
+                chatName: "",
+                profileImageUrl: ""
+            )
+        )
     }
 }

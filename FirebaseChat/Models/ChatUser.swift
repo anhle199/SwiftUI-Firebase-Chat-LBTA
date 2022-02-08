@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ChatUser: Identifiable, Equatable {
+struct ChatUser: Identifiable, Equatable, Codable {
     let uid: String
     let email: String
     let chatName: String
@@ -16,19 +16,4 @@ struct ChatUser: Identifiable, Equatable {
     var id: String {
         return uid
     }
-    
-    init(from data: [String: Any]) {
-        self.uid = data["uid"] as? String ?? ""
-        self.email = data["email"] as? String ?? ""
-        self.chatName = data["chatName"] as? String ?? ""
-        self.profileImageUrl = data["profileImageUrl"] as? String ?? ""
-    }
-    
-    init(uid: String, email: String, chatName: String, profileImageUrl: String) {
-        self.uid = uid
-        self.email = email
-        self.chatName = chatName
-        self.profileImageUrl = profileImageUrl
-    }
-    
 }
