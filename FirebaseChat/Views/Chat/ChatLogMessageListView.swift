@@ -46,14 +46,7 @@ struct ChatLogMessageListView: View {
 struct ChatLogMessageListView_Previews: PreviewProvider {
     static var previews: some View {
         ChatLogMessageListView(
-            viewModel: ChatLogViewModel(
-                chatUser: ChatUser(
-                    uid: "",
-                    email: "",
-                    chatName: "",
-                    profileImageUrl: ""
-                )
-            )
+            viewModel: ChatLogViewModel()
         )
             .background(Color(.init(white: 0.95, alpha: 1)))
     }

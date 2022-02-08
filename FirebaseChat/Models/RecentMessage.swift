@@ -16,4 +16,12 @@ struct RecentMessage: Identifiable, Codable {
     let sentAt: Date
     let chatName: String
     let profileImageUrl: String
+    
+    var timeAgo: String {
+        let formatter = RelativeDateTimeFormatter()
+        formatter.unitsStyle = .abbreviated
+        formatter.calendar.timeZone = .autoupdatingCurrent
+        
+        return formatter.string(for: sentAt) ?? sentAt.description
+    }
 }

@@ -24,6 +24,9 @@ struct MainMessagesView: View {
     // User will be selected to start conversation
     @State private var chatUser: ChatUser?
     
+    // Chat Log ViewModel
+    private var chatLogViewModel = ChatLogViewModel()
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -34,10 +37,13 @@ struct MainMessagesView: View {
                 )
                 
                 // List of scrollable messages
-                MainMessageListView(viewModel: viewModel)
+                MainMessageListView(
+                    viewModel: viewModel,
+                    didSelectUser: didSelecteNewUser
+                )
                 
                 NavigationLink("", isActive: $shouldNavigateToChatLogView) {
-                    ChatLogView(chatUser: self.chatUser)
+                    ChatLogView(viewModel: chatLogViewModel)
                 }
             }
             .navigationBarHidden(true)
@@ -52,7 +58,7 @@ struct MainMessagesView: View {
     @ViewBuilder
     private func NewMessageButton() -> some View {
         Button {
-            shouldShowNewMessagesScreen.toggle()
+            self.shouldShowNewMessagesScreen.toggle()
         } label: {
             Text("+ New Message")
                 .font(.system(size: 18, weight: .bold))
@@ -75,6 +81,8 @@ struct MainMessagesView: View {
     
     private func didSelecteNewUser(_ selectedUser: ChatUser) {
         self.chatUser = selectedUser
+        self.chatLogViewModel.chatUser = selectedUser
+        self.chatLogViewModel.fecthMessages()
         self.shouldNavigateToChatLogView = true
     }
 }

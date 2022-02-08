@@ -9,16 +9,8 @@ import SwiftUI
 
 struct ChatLogView: View {
     
-    // Optional variable stores receiver information
-    let chatUser: ChatUser?
-    
     // View model
-    @ObservedObject private var viewModel: ChatLogViewModel
-    
-    init(chatUser: ChatUser?) {
-        self.chatUser = chatUser
-        self.viewModel = ChatLogViewModel(chatUser: chatUser)
-    }
+    @ObservedObject var viewModel: ChatLogViewModel
     
     var body: some View {
         VStack(spacing: 0) {
@@ -50,8 +42,14 @@ struct ChatLogView: View {
                 )
             }
         }
-        .navigationTitle(chatUser?.chatName ?? "Username")
+        .navigationTitle(viewModel.chatUser?.chatName ?? "Username")
         .navigationBarTitleDisplayMode(.inline)
+        .onDisappear {
+            viewModel.firestoreListener?.remove()
+            viewModel.chatUser = nil
+            viewModel.chatText = ""
+            viewModel.chatMessages.removeAll()
+        }
     }
     
 }
@@ -59,14 +57,7 @@ struct ChatLogView: View {
 struct ChatLogView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            ChatLogView(
-                chatUser: ChatUser(
-                    uid: "",
-                    email: "",
-                    chatName: "",
-                    profileImageUrl: ""
-                )
-            )
+            ChatLogView(viewModel: ChatLogViewModel())
         }
         .navigationViewStyle(StackNavigationViewStyle())
     }

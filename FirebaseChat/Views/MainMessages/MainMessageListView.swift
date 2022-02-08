@@ -12,6 +12,8 @@ struct MainMessageListView: View {
     // View model
     @ObservedObject var viewModel: MainMessagesViewModel
     
+    let didSelectUser: (ChatUser) -> Void
+    
     var body: some View {
         ScrollView {
             ForEach(viewModel.recentMessages) { recentMessage in
@@ -25,8 +27,8 @@ struct MainMessageListView: View {
                         profileImageUrl: recentMessage.profileImageUrl
                     )
                     
-                    NavigationLink {
-                        ChatLogView(chatUser: chatUser)
+                    Button {
+                        self.didSelectUser(chatUser)
                     } label: {
                         MainMessageRow(with: recentMessage)
                             .foregroundColor(Color(.label))
@@ -46,6 +48,9 @@ struct MainMessageListView: View {
 
 struct MainMessageListView_Previews: PreviewProvider {
     static var previews: some View {
-        MainMessageListView(viewModel: MainMessagesViewModel())
+        MainMessageListView(
+            viewModel: MainMessagesViewModel(),
+            didSelectUser: { _ in }
+        )
     }
 }

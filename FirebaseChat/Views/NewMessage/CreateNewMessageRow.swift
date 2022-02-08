@@ -18,7 +18,7 @@ struct CreateNewMessageRow: View {
             // User avatar image
             WebImage(url: URL(string: user.profileImageUrl))
                 .placeholder {
-                    Image(systemName: "person.fill")
+                    Image(systemName: ImageConstants.defaultAvatarName)
                         .font(.system(size: 34, weight: .heavy))
                 }
                 .resizable()

@@ -39,7 +39,7 @@ final class LoginViewModel: ObservableObject {
             }
             
             self.isLoggedInOrRegistered = true
-            self.errorMessage = "Successfully logged in user: \(result?.user.uid ?? "")"
+            self.errorMessage = "Successfully logged in user)"
         }
     }
     
@@ -58,7 +58,7 @@ final class LoginViewModel: ObservableObject {
                 return
             }
             
-            self.errorMessage = "Successfully created user: \(result?.user.uid ?? "")"
+            self.errorMessage = "Successfully created user"
             self.persistImageToStorage()
         }
     }
@@ -88,7 +88,7 @@ final class LoginViewModel: ObservableObject {
                     return
                 }
                 
-                safeSelf.errorMessage = "Successfully stored image with url: \(url?.absoluteString ?? "")"
+                safeSelf.errorMessage = "Successfully stored image with url"
                 
                 if let url = url {
                     safeSelf.storeUserInformation(profileImageUrl: url)

@@ -52,7 +52,7 @@ struct LoginView: View {
                                         .frame(width: 128, height: 128)
                                         .cornerRadius(64)
                                 } else {
-                                    Image(systemName: "person.fill")
+                                    Image(systemName: ImageConstants.defaultAvatarName)
                                         .font(.system(size: 64))
                                         .padding()
                                         .foregroundColor(Color(.label))

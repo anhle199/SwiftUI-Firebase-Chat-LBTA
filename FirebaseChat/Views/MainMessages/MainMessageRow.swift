@@ -22,7 +22,7 @@ struct MainMessageRow: View {
             // Sent user's avatar
             WebImage(url: URL(string: recentMessage.profileImageUrl))
                 .placeholder {
-                    Image(systemName: "person.fill")
+                    Image(systemName: ImageConstants.defaultAvatarName)
                         .font(.system(size: 32))
                 }
                 .resizable()
@@ -54,7 +54,7 @@ struct MainMessageRow: View {
             Spacer()
             
             // Duration from the last message which is sent
-            Text(recentMessage.sentAt.description)
+            Text(recentMessage.timeAgo)
                 .font(.system(size: 14, weight: .semibold))
         }
     }

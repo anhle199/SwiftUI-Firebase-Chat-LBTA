@@ -15,3 +15,8 @@ struct FirebaseConstants {
     static let chatName = "chatName"
     static let profileImageUrl = "profileImageUrl"
 }
+
+struct ImageConstants {
+    static let defaultAvatarName = "person.fill"
+    static let signOutSymbolName = "rectangle.portrait.and.arrow.right"
+}

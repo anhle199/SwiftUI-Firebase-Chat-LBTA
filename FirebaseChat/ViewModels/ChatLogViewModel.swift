@@ -13,28 +13,22 @@ final class ChatLogViewModel: ObservableObject {
     
     // Specific conversation information
     @Published var chatMessages = [ChatMessage]()
-    @Published var chatText: String
-    let chatUser: ChatUser?
+    @Published var chatText = ""
+    var chatUser: ChatUser?
     
     //
     @Published var fireAutoScrolling = false
     
-    init(chatUser: ChatUser?) {
-        self.chatText = ""
-        self.chatUser = chatUser
-        
-        // Fetch all messages of receiver's conversation
-        fecthMessages()
-    }
+    var firestoreListener: ListenerRegistration?
     
-    private func fecthMessages() {
+    func fecthMessages() {
         guard let fromId = FirebaseManager.currentUserID,
               let toId = chatUser?.uid
         else {
             return
         }
         
-        FirebaseManager.shared.firestore
+        self.firestoreListener = FirebaseManager.shared.firestore
             .collection("messages")
             .document(fromId)
             .collection(toId)
@@ -52,6 +46,7 @@ final class ChatLogViewModel: ObservableObject {
                                 as: ChatMessage.self
                             ) {
                                 self.chatMessages.append(chatMessage)
+                                print("Append new message in listener, message: \(chatMessage.text), at: \(chatMessage.sentAt)")
                             }
                         } catch {
                             print("Error when decoding chat message, error: \(error)")

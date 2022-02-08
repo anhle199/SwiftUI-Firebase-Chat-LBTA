@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Firebase
 import FirebaseFirestoreSwift
 
 final class MainMessagesViewModel: ObservableObject {
@@ -18,6 +19,9 @@ final class MainMessagesViewModel: ObservableObject {
     
     // List of recent messages of the current user.
     @Published var recentMessages = [RecentMessage]()
+    
+    // This variable can be used to remove firestore snapshot listener
+    private var firestoreListener: ListenerRegistration?
     
     init() {
         DispatchQueue.main.async {
@@ -58,14 +62,18 @@ final class MainMessagesViewModel: ObservableObject {
             }
     }
     
-    func fetchRecentMessages() {
-        self.recentMessages.removeAll()
-        
+    func fetchRecentMessages() {        
         guard let uid = FirebaseManager.currentUserID else {
             return
         }
         
-        FirebaseManager.shared.firestore
+        // Remove a snapshot listener to listening recent messages
+        firestoreListener?.remove()
+        
+        // Remove all currently recent messages to fetch the new list
+        self.recentMessages.removeAll()
+
+        self.firestoreListener = FirebaseManager.shared.firestore
             .collection("recent_messages")
             .document(uid)
             .collection("messages")
@@ -93,6 +101,7 @@ final class MainMessagesViewModel: ObservableObject {
                                 as: RecentMessage.self
                             ) {
                                 self.recentMessages.insert(recentMessage, at: 0)
+                                print("Fetching recent message, at: \(Date())")
                             }
                         } catch {
                             print("Error when decoding Recent Message object, error: \(error)")
@@ -105,8 +114,17 @@ final class MainMessagesViewModel: ObservableObject {
     
     func handleSignOut() {
         do {
+            // Sign out
             try FirebaseManager.shared.auth.signOut()
             isUserCurrentlyLoggedOut.toggle()
+
+            // Remove a snapshot listener to listening recent messages
+            firestoreListener?.remove()
+            
+            // Remove all currently recent messages to fetch the new list
+            self.recentMessages.removeAll()
+            
+            //
             FirebaseManager.shared.currentUser = nil
         } catch {
             print("Cannot log out of this account")

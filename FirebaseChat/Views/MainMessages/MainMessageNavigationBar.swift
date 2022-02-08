@@ -22,7 +22,7 @@ struct MainMessageNavigationBar: View {
             // Profile avatar
             WebImage(url: URL(string: viewModel.currentUser?.profileImageUrl ?? ""))
                 .placeholder {
-                    Image(systemName: "person.fill")
+                    Image(systemName: ImageConstants.defaultAvatarName)
                         .font(.system(size: 34, weight: .heavy))
                 }
                 .resizable()
@@ -61,7 +61,7 @@ struct MainMessageNavigationBar: View {
             Button {
                 shouldShowLogOut.toggle()
             } label: {
-                Image(systemName: "rectangle.portrait.and.arrow.right.fill")
+                Image(systemName: ImageConstants.signOutSymbolName)
                     .font(.system(size: 24, weight: .bold))
                     .foregroundColor(Color(.label))
             }
